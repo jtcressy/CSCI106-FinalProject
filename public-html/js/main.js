@@ -13,19 +13,18 @@ function bodyOnLoad() {
     title = document.getElementById("title");
     subtitle = document.getElementById("subtitle");
     content = document.getElementById("content");
+    //default values
+    body.style.backgroundImage = "url('media/31085034036_912d039346_o.jpg')";
+    body.style.backgroundSize = "100%";
+    body.style.backgroundAttachment = "fixed";
+    title.innerText = "Down To The Wire";
+    subtitle.innerText = "A blog about servers, networking, and other topics";
+    //END default values
     if (RegExp("adventure-in-raidz-recovery.html").test(window.location.href))
     {
         content.style = "text-align: left;font-size: 1.5em;margin:5em;"
         title.innerText = "An Adventure in RAIDZ Data Recovery";
         subtitle.innerText = "ZFS, Freenas, and Bad Decisions";
-    }
-    if (RegExp("index.html").test(window.location.href))
-    {
-        body.style.backgroundImage = "url('media/31085034036_912d039346_o.jpg')";
-        body.style.backgroundSize = "100%";
-        body.style.backgroundAttachment = "fixed";
-        title.innerText = "Down To The Wire";
-        subtitle.innerText = "A blog about servers, networking, and other topics";
     }
     if (RegExp("phys-compute-server.html").test(window.location.href))
     {
