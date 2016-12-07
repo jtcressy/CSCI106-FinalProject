@@ -15,7 +15,7 @@ function bodyOnLoad() {
     content = document.getElementById("content");
     if (RegExp("adventure-in-raidz-recovery.html").test(window.location.href))
     {
-        content.innerText = "wewlad";
+        content.style = "text-align: left;font-size: 1.5em;margin:5em;"
         title.innerText = "An Adventure in RAIDZ Data Recovery";
         subtitle.innerText = "ZFS, Freenas, and Bad Decisions";
     }
