@@ -38,3 +38,7 @@ function bodyOnLoad() {
         subtitle.innerText = "Some photos and specs of a truly beastly machine.";
     }
 }
+
+function mail(email) {
+    
+}

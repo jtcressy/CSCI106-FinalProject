@@ -20,7 +20,13 @@
         <script src="js/main.js"></script>
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/material-shadows.css">
-        
+        <?php
+        session_start();
+        if (isset($_POST["value"])){
+            $_SESSION["value"] = $_POST["value"];
+        }
+        $value = $_SESSION["value"];
+        ?>
         <title>Down To The Wire</title>
     </head>
     <body id="body" onload="bodyOnLoad()">
@@ -58,7 +64,13 @@
                 <h1 id="title"></h1>
                 <h3 id="subtitle"></h3>
                 <div id="content">
-                    
+                    <label for="value">Saved value in session: </label>
+                    <span name="value"><?php print_r($value); ?></span>
+                    <form action="form.php" method="POST">
+                        <h3>Enter some text to be saved to your session:</h3>
+                        <input type="text" name="value"/>
+                        <input type="button" value="Submit" name="submit" type="submit"/>
+                    </form>
                 </div>
             </div>
         </div>
