@@ -1,2 +1,2 @@
-FROM httpd:2.4
-COPY ./public-html/ /usr/local/apache2/htdocs/jtcressy/
+FROM php:7.0-apache
+COPY ./public-html/ /var/www/html/jtcressy/
