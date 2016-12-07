@@ -77,14 +77,14 @@
 				On monday afternoon, the block level backup finished (took 11 hours!) and I plugged one of the drives from the array into a USB dock connected to my Ubuntu 16.04 laptop. Ubuntu 16.04 was important, since it was a usable desktop OS with kernel support for ZFS utilities. On the right we have a picture of Ground Zero, just barely beginning our recovery attempts. </p>
 			<p>
 				We spent a few hours researching GPT partition structures, ZFS, tools and more to come up with a solution. I found out that ZFS uses GUID's to identify each disk, instead of identifying via hardware location. But the question was: just where did that GUID get stored on the disk? The answer is actually in the ZFS parition, contrary to the GPT partition table that I had initially feared. Learning this, we pulled the trigger and copied the partition table from one of my old disks to the disk we were working with.</p>
-<pre class="code boxshadow-z3" style="">
+<code class="boxshadow-z3">
 sgdisk -R /dev/sdd /dev/sdc
 sgdisk -G /dev/sdd
 fdisk /dev/sdd
 #delete second partition and recreate at same starting sector,
 #but expand to the end of the disk. make sure to set its type
 #to freebsd ZFS (number 35). DO NOT FORMAT.
-</pre>
+</code>
 			<p>
 				Using the commands on the right, I copied the partition table across, created a new GPT GUID (This is not the ZFS pool ID, don't worry, it's stored in the ZFS partition) and started up fdisk to resize the ZFS partition since I was copying from a 1TB disk to a 2TB disk. As long as it was recreated with the SAME EXACT starting sector as the previous partition, all was good. Just set the end sector to the end of the disk. Don't format, change the partition type to FreeBSD ZFS, and write it to disk.
 			</p>
