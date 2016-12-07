@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<?php session_start(); ?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -21,7 +22,7 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/material-shadows.css">
         <?php
-        session_start();
+        
         if (isset($_POST["value"])){
             $_SESSION["value"] = $_POST["value"];
         }
