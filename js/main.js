@@ -17,7 +17,9 @@ function bodyOnLoad() {
     {
         title.innerText = "An Adventure in RAIDZ Data Recovery";
         subtitle.innerText = "ZFS, Freenas, and Bad Decisions";
-        content.innerText = "";
+        content.innerHtml = `
+            <p></p>
+        `;
     }
     if (RegExp("index.html").test(window.location.href))
     {
