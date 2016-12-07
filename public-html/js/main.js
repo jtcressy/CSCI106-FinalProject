@@ -1,3 +1,5 @@
+
+
 function navbarOnLoad() {
     var url = window.location.href;
     $("#navbar a").each(function() {
@@ -9,10 +11,10 @@ function navbarOnLoad() {
 
 function bodyOnLoad() {
     navbarOnLoad();
-    body = document.getElementById("body");
-    title = document.getElementById("title");
-    subtitle = document.getElementById("subtitle");
-    content = document.getElementById("content");
+    var body = document.getElementById("body");
+    var title = document.getElementById("title");
+    var subtitle = document.getElementById("subtitle");
+    var content = document.getElementById("content");
     //default values
     body.style.backgroundImage = "url('media/31085034036_912d039346_o.jpg')";
     body.style.backgroundSize = "100%";
