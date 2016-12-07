@@ -29,7 +29,7 @@ function bodyOnLoad() {
     }
     if (RegExp("phys-compute-server.html").test(window.location.href))
     {
-        content.style = "text-align: left; font-size: 1.3em; margin: 2em;";
+        content.style = "text-align: left; font-size: 1.4em; margin: 1em;";
         title.innerText = "Dr. Workman's New Server";
         subtitle.innerText = "Some photos and specs of a truly beastly machine.";
     }
