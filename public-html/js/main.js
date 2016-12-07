@@ -22,6 +22,8 @@ function bodyOnLoad() {
     if (RegExp("index.html").test(window.location.href))
     {
         body.style.backgroundImage = "url('media/31085034036_912d039346_o.jpg')";
+        body.style.backgroundSize = "100%";
+        body.style.backgroundAttachment = "fixed";
         title.innerText = "Down To The Wire";
         subtitle.innerText = "A blog about servers, networking, and other topics";
     }
