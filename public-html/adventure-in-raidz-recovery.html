@@ -57,6 +57,50 @@
                 <h1 id="title"></h1>
                 <h3 id="subtitle"></h3>
                 <div id="content">
+                    <p>
+				Sometime around saturday morning on september 10th, my FreeNAS had upgraded to the alpha version. I had forgotten that the update train was set to FreeNAS-10 ALPHA and it upgraded it automatically, changing the entire UI and forgetting all my settings. I tried to import my zpool, but due to confusing UI functions I accidentally deleted it when I simply expected to detach it. There were no confirmation dialogs, so as soon as I clicked the delete button all the partition tables were wiped.
+			</p>
+			<p>
+				For those on earlier versions of freenas, this is similar to detaching and checking the box for "Mark as new". And it clearly states that it is DESTRUCTIVE OF DATA. So, no one in their right mind would check that box and be surprised that their data is gone. Good UI design in this regard. Unfortunately, the version 10 alpha didn't have some of these deeply important warnings. Nor did it have the option to detach without marking new.
+			</p>
+			<p>
+				My array consisted of 4x2TB drives in a RAIDZ1 configuration. This is akin to a normal RAID5 setup, but it's software based with ZFS which adds ram-caching, snapshots, and hardware independence. I had about 1.5TB of data on this volume, and some of it held rather sentimental value. Although, it wasnt incredibly important information; most of it could be recreated without immense effort.
+			</p>
+			<p>
+				After about 48 hours of nervous breakdowns and my mind running wild about what I had lost, a good friend of mine brought over a 5TB hard drive with just enough free space to backup one of my drives via a block-level backup using GNU dd. Once things were backed up, we could begin attempting data recovery.
+			</p>
+			<p>
+				I had noticed that every drive in a ZFS array (specifically, one created in FreeNAS) had an identical parition table structure. All partitions started and ended on the same sector, and had the same type. The main ZFS partition started on a sector approximately 2GB into the disk. Before that, you had a swap partition. Thankfully, I had a spare drive that was upgraded out of the array that still had the same identical partition table intact. I had two of them, infact, so that if I screwed one up by getting my read/write directions wrong, I was covered.
+			</p>
+			<img class="boxshadow-z3 mobile-width" style="float: right;" src="media/IMG_20160912_183202.jpg" alt="Ground Zero"></img>
+			<p>
+				On monday afternoon, the block level backup finished (took 11 hours!) and I plugged one of the drives from the array into a USB dock connected to my Ubuntu 16.04 laptop. Ubuntu 16.04 was important, since it was a usable desktop OS with kernel support for ZFS utilities. On the right we have a picture of Ground Zero, just barely beginning our recovery attempts. </p>
+			<p>
+				We spent a few hours researching GPT partition structures, ZFS, tools and more to come up with a solution. I found out that ZFS uses GUID's to identify each disk, instead of identifying via hardware location. But the question was: just where did that GUID get stored on the disk? The answer is actually in the ZFS parition, contrary to the GPT partition table that I had initially feared. Learning this, we pulled the trigger and copied the partition table from one of my old disks to the disk we were working with.</p>
+<pre class="code boxshadow-z3" style="">
+sgdisk -R /dev/sdd /dev/sdc
+sgdisk -G /dev/sdd
+fdisk /dev/sdd
+#delete second partition and recreate at same starting sector,
+#but expand to the end of the disk. make sure to set its type
+#to freebsd ZFS (number 35). DO NOT FORMAT.
+</pre>
+			<p>
+				Using the commands on the right, I copied the partition table across, created a new GPT GUID (This is not the ZFS pool ID, don't worry, it's stored in the ZFS partition) and started up fdisk to resize the ZFS partition since I was copying from a 1TB disk to a 2TB disk. As long as it was recreated with the SAME EXACT starting sector as the previous partition, all was good. Just set the end sector to the end of the disk. Don't format, change the partition type to FreeBSD ZFS, and write it to disk.
+			</p>
+			<p>
+				Now, how on earth do I check if this was successful? I assumed that ZFS would need to see all disks to even see the array to import it, but I was told that the import command works just fine if there's only one disk from the array present. It won't let you import it, but it'll show you that all the metadata is intact, which means you were SUCCESSFUL!. Thus, after running zpool import, it showed my original zpool and all the disks in a list! It showed the other disks as detached and the pool as failed, but the important thing is that the information about the pool is readable and fully intact. Filled with such confidence, I proceeded to run the commands to copy the partition table on all other disks and put them back into my server in preparation to import them again.
+			</p>
+			<img class="boxshadow-z3" style="width: 100%" src="media/QcAQzhg.png" alt="Screenshot of Ubuntu terminal showing importable ZFS volume"></img><br/>
+			<span style="display: flex;align-items: center;justify-content:center;">SUCCESS!</span>
+			<p>
+				I setup freenas again with a fresh install of version 9.10.1. NEVER AGAIN will I mess with upgrading software without backing up my data first. I inputted all my previous settings to the FreeNAS configuration again, and my home lab is back up and running, purring like a kitten.
+			</p>
+			<br/>
+			<br/>
+			<span style="display: flex;align-items: center;justify-content:center;">DOG TAX!</span>
+			<img class="boxshadow-z3" src="media/IMG_20160821_195714.jpg" style="width:90%;margin-left:5%;;" alt="Lynzy"></img><br/>
+            
                 </div>
             </div>
         </div>
